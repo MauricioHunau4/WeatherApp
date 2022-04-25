@@ -18,9 +18,7 @@ body{
 .app.warm{
   background-image: url('./assets/hot-bg.jpg');
 }
-.app.nice{
-  background-image: url('./assets/nice.jpg');
-}
+
 main{
   min-height: 100vh;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.60));
