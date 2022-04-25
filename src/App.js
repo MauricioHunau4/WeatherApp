@@ -5,7 +5,6 @@ const api = {
   base: "https://api.openweathermap.org/data/2.5/"
 }
 
-
 function App() {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
@@ -25,11 +24,11 @@ function App() {
       }
   }
 
-
   useEffect(()=>{
     if(countryCode !== ""){
       fetchApi();
     }
+    // eslint-disable-next-line
   }, [countryCode]);
 
 
