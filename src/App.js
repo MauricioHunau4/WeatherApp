@@ -1,27 +1,18 @@
 import React, { useState, useEffect } from 'react';
 
-const api = {
-  key: "dcf8f75fbb497255bd21327f08920eea",
-  base: "https://api.openweathermap.org/data/2.5/"
-}
-
-
 function App() {
   const [query, setQuery] = useState('');
   const [weather, setWeather] = useState({});
-  const [area, setArea] = useState("");
-  const [currencies, setCurrencies] = useState("");
-  const [capital, setCapital] = useState("");
-  const [demonym, setDemonym] = useState("");
-  const [languages, setLanguages] = useState("");
-  const [population, setPopulation] = useState("");
-  const [flag, setFlag] = useState("")
+
+  const [info, setInfo] = useState([]);
+  const [languages, setLanguages] = useState();
+  const [currencie, setCurrencie] = useState();
   const [countryCode, setCountryCode] = useState("")
 
 
   const search = evt => {
     if (evt.key === "Enter") {
-      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+      fetch(`${process.env.REACT_APP_API_BASE}weather?q=${query}&units=metric&APPID=${process.env.REACT_APP_API_KEY}`)
         .then(res => res.json())
         .then(result => {
           setWeather(result);
@@ -31,24 +22,23 @@ function App() {
     }
   }
 
+  console.log(info)
   useEffect(() => {
     if (countryCode !== "") {
       fetchApi();
     }
+    // eslint-disable-next-line
   }, [countryCode]);
 
+
   const fetchApi = async () => {
-    await fetch(`https://restcountries.com/v2/alpha/${countryCode}`)
+    fetch(`https://restcountries.com/v2/alpha/${countryCode}`)
       .then(res => res.json())
-      .then(data => {
-        setFlag(data.flag)
-        setArea(data.area)
-        setCapital(data.capital)
-        setCurrencies(data.currencies[0].name)
-        setDemonym(data.demonym)
-        setLanguages(data.languages[0].name)
-        setPopulation(data.population)
-      })
+      .then(res => {
+        setInfo(res)
+        setLanguages(res.languages[0].name)
+        setCurrencie(res.currencies[0].name)
+      });
   }
 
 
@@ -94,38 +84,38 @@ function App() {
               </div>
               <div>
                 <div className="flags">  <img
-                  src={flag}
+                  src={info.flag}
                   width="256"
                   height="192"
                   alt={weather.name}></img>
                 </div>
-                
+
               </div>
             </div>
-              <div className='information'>
-                <div>
-                  <div className='infos'>
-                    Capital: {capital}
-                  </div>
-                  <div className='infos'>
-                    Currencie:  {currencies}
-                  </div>
-                  <div className='infos'>
-                    Population: {population}
-                  </div>
+            <div className='information'>
+              <div>
+                <div className='infos'>
+                  Capital: {info.capital}
                 </div>
-                <div>
-                  <div className='infos'>
-                    Demonym: {demonym}
-                  </div>
-                  <div className='infos'>
-                    Area: {area} m<sup>2</sup>
-                  </div>
-                  <div className='infos'>
-                    Language: {languages} 
-                  </div>
+                <div className='infos'>
+                  Currencie:  {currencie}
+                </div>
+                <div className='infos'>
+                  Population: {info.population}
                 </div>
               </div>
+              <div>
+                <div className='infos'>
+                  Demonym: {info.demonym}
+                </div>
+                <div className='infos'>
+                  Language: {languages}
+                </div>
+                <div className='infos'>
+                  Area: {info.area} m<sup>2</sup>
+                </div>
+              </div>
+            </div>
           </div>
         ) : ('')}
       </main>
